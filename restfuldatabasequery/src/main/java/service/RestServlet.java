@@ -59,4 +59,24 @@ public class RestServlet {
                 .sensorsByLocationAndType(location, dataType);
         return data;
     }
+
+    @GET
+    @Path("/max/{datatype}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public SensorData getMaxValueOfSensorType(@PathParam("datatype") String dataType){
+        dataType = dataType.toLowerCase();
+        InfluxQueryModel query = new InfluxQueryModel();
+
+        return query.maxValueSensor(dataType);
+    }
+
+    @GET
+    @Path("/min/{datatype}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public SensorData getMinValueOfSensorType(@PathParam("datatype") String dataType){
+        dataType = dataType.toLowerCase();
+        InfluxQueryModel query = new InfluxQueryModel();
+
+        return query.minValueSensor(dataType);
+    }
 }

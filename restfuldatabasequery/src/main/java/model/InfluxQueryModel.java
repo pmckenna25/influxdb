@@ -47,4 +47,44 @@ public class InfluxQueryModel {
         dt1.retainAll(dt2);
         return new LinkedList<>(dt1);
     }
+
+    public SensorData maxValueSensor(String type){
+
+        double max = Double.MIN_VALUE;
+        SensorData result = null;
+        List<SensorData> sensorData = sensorsByType(type);
+        for(SensorData data : sensorData){
+
+            String[] splitData = data.getMeasuredValues().split(",");
+            String value = splitData[splitData.length-1];
+            String trimmed =  value.substring(value.indexOf(":")+1, value.indexOf("}"));
+            double possibleMax = Double.parseDouble(trimmed);
+            if(possibleMax > max){
+
+                max = possibleMax;
+                result = data;
+            }
+        }
+        return result;
+    }
+
+    public SensorData minValueSensor(String type){
+
+        double min = Double.MAX_VALUE;
+        SensorData result = null;
+        List<SensorData> sensorData = sensorsByType(type);
+        for(SensorData data : sensorData){
+
+            String[] splitData = data.getMeasuredValues().split(",");
+            String value = splitData[splitData.length-1];
+            String trimmed =  value.substring(value.indexOf(":")+1, value.indexOf("}"));
+            double possibleMin = Double.parseDouble(trimmed);
+            if(possibleMin < min){
+
+                min = possibleMin;
+                result = data;
+            }
+        }
+        return result;
+    }
 }
